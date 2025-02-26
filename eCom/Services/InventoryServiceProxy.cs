@@ -76,7 +76,7 @@ namespace Libary.eCom.Services
             }
             return p;
         }
-        public Product AddOrUpdate(int Id, int choice, string newVal)
+        public Product Update(int Id, int choice, string newVal)
         {
             var product = Products.FirstOrDefault(p => p.Id == Id);
             if (choice == 1)
@@ -118,6 +118,11 @@ namespace Libary.eCom.Services
 
 
             return ShoppingCartProduct;
+        }
+
+        public Product? GetById(int id)
+        {
+            return Products.FirstOrDefault(p => p.Id == id);
         }
 
     }
@@ -164,12 +169,12 @@ namespace Libary.eCom.Services
             if (count == -1 || product.Count == count)
             {
                 shoppingCart.Remove(product);
-                InventoryServiceProxy.Current.AddOrUpdate(id, 4, product.Count.ToString());
+                InventoryServiceProxy.Current.Update(id, 4, product.Count.ToString());
             }
             else if (count < product.Count)
             {
                 product.Count -= count;
-                InventoryServiceProxy.Current.AddOrUpdate(id, 4, count.ToString());
+                InventoryServiceProxy.Current.Update(id, 4, count.ToString());
             }
 
             return product;
