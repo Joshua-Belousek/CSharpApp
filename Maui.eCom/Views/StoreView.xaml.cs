@@ -22,4 +22,8 @@ public partial class StoreView : ContentPage
 		
 	}
 
+    private void ShoppingCart(object sender, EventArgs e)
+    {
+        Shell.Current.GoToAsync("//ShoppingCart");
+    }
 }

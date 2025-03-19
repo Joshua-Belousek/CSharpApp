@@ -14,16 +14,16 @@ namespace Maui.eCom.ViewModels
     public class StoreViewModel : INotifyPropertyChanged
     {
         public int ItemCount { get; set; }
-        public Product? Item { get; set; }
+        public Item? Item { get; set; }
 
         private InventoryServiceProxy _svc = InventoryServiceProxy.Current;
 
         private CartServiceProxy cart = CartServiceProxy.Current;
-        public ObservableCollection<Product?> Inventory
+        public ObservableCollection<Item?> Inventory
         {
             get
             {
-                return new ObservableCollection<Product?>(_svc.Products);
+                return new ObservableCollection<Item?>(_svc.Products);
             }
 
         }

@@ -13,15 +13,15 @@ namespace Maui.eCom.ViewModels
 {
     public class InventoryManagementViewModel : INotifyPropertyChanged
     {
-        public Product? SelectedProduct { get; set; }
+        public Item? SelectedProduct { get; set; }
         public string? Query { get; set; }
         private InventoryServiceProxy _svc = InventoryServiceProxy.Current;
-        public ObservableCollection<Product?> Products
+        public ObservableCollection<Item?> Items
         {
             get
             {
-                var filteredList = _svc.Products.Where(p => p?.Name?.ToLower().Contains(Query?.ToLower() ?? string.Empty) ?? false);
-                return new ObservableCollection<Product?>(filteredList);
+                var filteredList = _svc.Products.Where(p => p?.Product.Name?.ToLower().Contains(Query?.ToLower() ?? string.Empty) ?? false);
+                return new ObservableCollection<Item?>(filteredList);
             }
         }
 
@@ -39,13 +39,13 @@ namespace Maui.eCom.ViewModels
 
         public void RefreshProductList()
         {
-            NotifyPropertyChanged(nameof(Products));
+            NotifyPropertyChanged(nameof(Items));
         }
 
-        public Product? Delete()
+        public Item? Delete()
         {
             var item = _svc.Delete(SelectedProduct?.Id ?? 0);
-            NotifyPropertyChanged("Products");
+            NotifyPropertyChanged("Items");
             return item;
         }
     }

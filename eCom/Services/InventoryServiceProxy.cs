@@ -10,7 +10,7 @@ namespace Libary.eCom.Services
     public class InventoryServiceProxy
     {
 
-        public List<Product?> Products { get; private set; }
+        public List<Item?> Products { get; private set; }
 
 
         private static InventoryServiceProxy? instance;
@@ -34,11 +34,11 @@ namespace Libary.eCom.Services
 
         private InventoryServiceProxy()
         {
-            Products = new List<Product?>
+            Products = new List<Item?>
             {
-                new Product{Id = 1, Name ="Product 1"},
-                new Product{Id = 2, Name ="Product 2"},
-                new Product{Id = 3, Name ="Product 3"}
+                new Item{Product = new Product{Id = 1, Name ="Product 1"}, Id = 1, Count = 1 },
+                new Item{Product = new Product{Id = 2, Name ="Product 2"}, Id = 2, Count = 2 },
+                new Item { Product = new Product { Id = 3, Name = "Product 3" }, Id = 3, Count = 3 }
             };
         }
         private int LastKey
@@ -54,55 +54,56 @@ namespace Libary.eCom.Services
             }
         }
 
-        public Product? Delete(int id)
+        public Item? Delete(int id)
         {
             if (id == 0)
             {
                 return null;
             }
 
-            Product? product = Products.FirstOrDefault(p => p.Id == id);
-            Products.Remove(product);
+            Item? Item = Products.FirstOrDefault(p => p.Id == id);
+            Products.Remove(Item);
 
-            return product;
+            return Item;
         }
 
-        public Product Add(Product p)
+        public Item Add(Item p)
         {
             if (p.Id == 0)  // 0 means add
             {
                 p.Id = LastKey + 1;
+                p.Product.Id = p.Id;
                 Products.Add(p);
             }
             return p;
         }
-        public Product Update(int Id, int choice, string newVal)
+        public Item Update(int Id, int choice, string newVal)
         {
-            var product = Products.FirstOrDefault(p => p.Id == Id);
+            var item = Products.FirstOrDefault(p => p.Id == Id);
             if (choice == 1)
             {
-                product.Name = newVal;
+                item.Product.Name = newVal;
             }
             else if (choice == 2)
             {
                 double price = double.Parse(newVal);
-                product.Price = price;
+                item.Product.Price = price;
             }
             else if (choice == 3)
             {
                 int count = int.Parse(newVal);
-                product.Count = count;
+                item.Count = count;
             }
             else if (choice == 4)
             {
                 int count = int.Parse(newVal);
-                product.Count += count;
+                item.Count += count;
             }
 
-            return product;
+            return item;
         }
         
-        public Product? buy(int Id, int count)
+        public Item? buy(int Id, int count)
         {
             var selectedProd = Products.FirstOrDefault(p => p.Id == Id);
 
@@ -111,7 +112,7 @@ namespace Libary.eCom.Services
             if (selectedProd.Count < count)
                 return null;
 
-            Product ShoppingCartProduct = new Product(selectedProd);
+            Item ShoppingCartProduct = new Item(selectedProd);
 
             selectedProd.Count -= count;
             ShoppingCartProduct.Count = count;
@@ -120,7 +121,7 @@ namespace Libary.eCom.Services
             return ShoppingCartProduct;
         }
 
-        public Product? GetById(int id)
+        public Item? GetById(int id)
         {
             return Products.FirstOrDefault(p => p.Id == id);
         }
@@ -129,7 +130,7 @@ namespace Libary.eCom.Services
 
     public class CartServiceProxy
     {
-        public List<Product?> shoppingCart { get; private set; }
+        public List<Item?> shoppingCart { get; private set; }
 
         private static CartServiceProxy? instance;
         private static object instanceLock = new object();
@@ -167,34 +168,34 @@ namespace Libary.eCom.Services
 
         public CartServiceProxy()
         {
-            shoppingCart = new List<Product?>();
+            shoppingCart = new List<Item?>();
         }
         
 
-        public Product? RemoveOrDelete(int id, int count)
+        public Item? RemoveOrDelete(int id, int count)
         {
             if (id == 0)
                 return null;
 
 
-            Product? product = shoppingCart.FirstOrDefault(p => p.Id == id);
-            if (product == null)
+            Item? item = shoppingCart.FirstOrDefault(p => p?.Id == id);
+            if (item == null)
                 return null;
-            if (count > product.Count)
+            if (count > item.Count)
                 return null;
 
-            if (count == -1 || product.Count == count)
+            if (count == -1 || item.Count == count)
             {
-                shoppingCart.Remove(product);
-                InventoryServiceProxy.Current.Update(id, 4, product.Count.ToString());
+                shoppingCart.Remove(item);
+                InventoryServiceProxy.Current.Update(id, 4, item.Count.ToString());
             }
-            else if (count < product.Count)
+            else if (count < item.Count)
             {
-                product.Count -= count;
+                item.Count -= count;
                 InventoryServiceProxy.Current.Update(id, 4, count.ToString());
             }
 
-            return product;
+            return item;
         }
 
 
@@ -204,9 +205,9 @@ namespace Libary.eCom.Services
             List<double> result = new List<double>();
             result.Add(0);
             result.Add(0);
-            foreach (Product product in shoppingCart)
+            foreach (Item item in shoppingCart)
             {
-                result[0] += product.Price * (double)product.Count;
+                result[0] += item.Product.Price * (double)item.Count;
             }
             result[1] = result[0] * 0.07;
             return result;

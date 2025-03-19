@@ -18,7 +18,7 @@ namespace Maui.eCom
 
         private void ShopClicked(object sender, EventArgs e)
         {
-            Shell.Current.GoToAsync("//ShoppingCart");
+            Shell.Current.GoToAsync("//StoreView");
         }
     }
 

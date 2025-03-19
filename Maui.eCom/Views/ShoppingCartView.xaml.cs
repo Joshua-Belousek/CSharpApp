@@ -9,4 +9,9 @@ public partial class ShoppingCartView : ContentPage
 		InitializeComponent();
 		BindingContext = new ShoppingCartViewModel();
 	}
+
+    private void GoBackClicked(object sender, EventArgs e)
+    {
+        Shell.Current.GoToAsync("//StoreView");
+    }
 }

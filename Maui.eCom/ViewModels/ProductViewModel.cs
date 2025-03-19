@@ -14,30 +14,30 @@ namespace Maui.eCom.ViewModels
         {
             get
             {
-                return Model?.Name ?? string.Empty;
+                return Model?.Product?.Name ?? string.Empty;
             }
 
             set
             {
-                if (Model != null && Model.Name != value)
+                if (Model != null && Model?.Product?.Name != value)
                 {
-                    Model.Name = value;
+                    Model.Product.Name = value ?? "";
                 }
             }
         }
-
+         
         public double? Price
         {
             get
             {
-                return Model?.Price ?? 0;
+                return Model?.Product.Price ?? 0;
             }
 
             set
             {
-                if (Model != null && Model.Price != value)
+                if (Model != null && Model.Product.Price != value)
                 {
-                    Model.Price = value ?? -1;
+                    Model.Product.Price = value ?? -1;
                 }
             }
         }
@@ -58,25 +58,32 @@ namespace Maui.eCom.ViewModels
             }
         }
 
-        public Product? Model { get; set; }
+        public Item? Model { get; set; }
 
 
         public ProductViewModel()
         {
-            Model = new Product();
+            Model = new Item();
         }
 
-        public ProductViewModel(Product? model)
+        public ProductViewModel(Item? model)
         {
-            Model = new Product(model);
+            Model = new Item(model);
         }
 
         public void add()
         {
-            InventoryServiceProxy.Current.Update(Model.Id,1,Model.Name);
-            InventoryServiceProxy.Current.Update(Model.Id, 2, Model.Price.ToString());
+            if (Model.Id == 0)
+            {
+                InventoryServiceProxy.Current.Add(Model);
+                return;
+            }
+
+
+            InventoryServiceProxy.Current.Update(Model.Id,1,Model.Product.Name);
+            InventoryServiceProxy.Current.Update(Model.Id, 2, Model.Product.Price.ToString());
             InventoryServiceProxy.Current.Update(Model.Id, 3, Model.Count.ToString());
         }
-
+         
     }
 }

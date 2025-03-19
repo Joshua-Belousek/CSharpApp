@@ -31,7 +31,7 @@ public partial class InventoryManagementView : ContentPage
 
     private void EditClicked(object sender, EventArgs e)
     {
-        var productId = (BindingContext as InventoryManagementViewModel)?.SelectedProduct?.Id;
+        var productId = (BindingContext as InventoryManagementViewModel)?.SelectedProduct?.Product?.Id;
         Shell.Current.GoToAsync($"//Product?productId={productId}");
     }
 

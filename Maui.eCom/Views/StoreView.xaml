@@ -38,5 +38,9 @@
         Text="Go Back"
         Clicked="GoBack"
         />
+        <Button
+            Text="Shopping Cart"
+            Clicked="ShoppingCart"
+            /Button>
     </VerticalStackLayout>
 </ContentPage>

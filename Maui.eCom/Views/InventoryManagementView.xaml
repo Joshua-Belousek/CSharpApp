@@ -14,7 +14,7 @@
             <Button Text="Search" Grid.Column="1" Clicked="SearchClicked"/>
         </Grid>
         <ListView
-            ItemsSource="{Binding Path=Products}"
+            ItemsSource="{Binding Path=Items}"
             SelectedItem="{Binding SelectedProduct}"
             >
             <ListView.ItemTemplate>

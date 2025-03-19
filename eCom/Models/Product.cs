@@ -11,15 +11,13 @@ namespace Libary.eCom.Models
         public int Id { get; set; }
         public string? Name { get; set; }
 
-        public int Count { get; set; }
-
         public double Price { get; set; }
 
         public string display
         {
             get
             {
-                return $"{Id}. {Name} - {Count} at ${Price} / item";
+                return $"{Id}. {Name} - ${Price} / item";
             }
         }
 
@@ -31,17 +29,16 @@ namespace Libary.eCom.Models
         public Product() { 
             Name = string.Empty;
             Price = 0;
-            Count = 0;
         }
 
         public Product(string name, double price, int count)
         {
-            Name = name; Price = price; Count = count;
+            Name = name; Price = price;
         }
 
         public Product(Product p)
         {
-            Name = p.Name; Price = p.Price; Count = p.Count; Id = p.Id;
+            Name = p.Name; Price = p.Price; Id = p.Id;
         }
     }
 }
