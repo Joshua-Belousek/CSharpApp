@@ -1,3 +1,5 @@
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using Maui.eCom.ViewModels;
 
 namespace Maui.eCom.Views;
@@ -16,6 +18,8 @@ public partial class StoreView : ContentPage
 
 	private void BuyClicked(Object sender, EventArgs e)
 	{
-
+		(BindingContext as StoreViewModel)?.buy();
+		
 	}
+
 }

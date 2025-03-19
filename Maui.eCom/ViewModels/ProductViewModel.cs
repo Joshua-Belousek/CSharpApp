@@ -68,12 +68,14 @@ namespace Maui.eCom.ViewModels
 
         public ProductViewModel(Product? model)
         {
-            Model = model;
+            Model = new Product(model);
         }
 
         public void add()
         {
-            InventoryServiceProxy.Current.Add(Model);
+            InventoryServiceProxy.Current.Update(Model.Id,1,Model.Name);
+            InventoryServiceProxy.Current.Update(Model.Id, 2, Model.Price.ToString());
+            InventoryServiceProxy.Current.Update(Model.Id, 3, Model.Count.ToString());
         }
 
     }

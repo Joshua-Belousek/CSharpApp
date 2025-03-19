@@ -23,6 +23,13 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+        <Label 
+        Text="Count to buy:"
+        VerticalOptions="Center" 
+        HorizontalOptions="Start" />
+        <Entry
+        Text="{Binding ItemCount}"
+        />
         <Button
         Text="Buy"
         Clicked="BuyClicked"

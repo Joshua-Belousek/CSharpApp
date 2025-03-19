@@ -131,8 +131,25 @@ namespace Libary.eCom.Services
     {
         public List<Product?> shoppingCart { get; private set; }
 
+        private static CartServiceProxy? instance;
+        private static object instanceLock = new object();
 
-        
+        public static CartServiceProxy Current
+        {
+            get
+            {
+                lock (instanceLock)
+                {
+                    if (instance == null)
+                    {
+                        instance = new CartServiceProxy();
+                    }
+                }
+
+                return instance;
+            }
+        }
+
         public void add(int Id, int count)
         {
             var isInCart = shoppingCart.FirstOrDefault(p => p.Id == Id);

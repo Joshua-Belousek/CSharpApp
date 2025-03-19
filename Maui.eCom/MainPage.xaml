@@ -8,7 +8,8 @@
             <Button
             Text="Inventory Management"
                 Clicked="InventoryClicked"/>
-            <Button Text="Shop"/>
+            <Button Text="Shop"
+                    Clicked="ShopClicked"/>
         </VerticalStackLayout>
     </ScrollView>
 
