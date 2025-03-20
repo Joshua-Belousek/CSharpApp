@@ -33,7 +33,7 @@ namespace Libary.eCom.Models
 
         public Item(Item item)
         {
-            Product = new Product(item.Product);
+            Product = item.Product;
             Count = item.Count;
             Id = item.Id;
         }

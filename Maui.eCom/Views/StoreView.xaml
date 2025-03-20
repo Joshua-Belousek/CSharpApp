@@ -41,6 +41,6 @@
         <Button
             Text="Shopping Cart"
             Clicked="ShoppingCart"
-            /Button>
+            />
     </VerticalStackLayout>
 </ContentPage>
