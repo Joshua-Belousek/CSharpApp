@@ -213,5 +213,10 @@ namespace Libary.eCom.Services
             return result;
         }
 
+        public void ClearCart()
+        {
+            shoppingCart.Clear();
+        }
+
     }
 }
