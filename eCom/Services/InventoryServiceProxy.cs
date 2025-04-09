@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Libary.eCom.DTO;
 using Libary.eCom.Models;
 
 namespace Libary.eCom.Services
@@ -36,9 +37,9 @@ namespace Libary.eCom.Services
         {
             Products = new List<Item?>
             {
-                new Item{Product = new Product{Id = 1, Name ="Product 1"}, Id = 1, Count = 1 },
-                new Item{Product = new Product{Id = 2, Name ="Product 2"}, Id = 2, Count = 2 },
-                new Item { Product = new Product { Id = 3, Name = "Product 3" }, Id = 3, Count = 3 }
+                new Item{Product = new ProductDTO{Id = 1, Name ="Product 1"}, Id = 1, Count = 1 },
+                new Item{Product = new ProductDTO{Id = 2, Name ="Product 2"}, Id = 2, Count = 2 },
+                new Item { Product = new ProductDTO{ Id = 3, Name = "Product 3" }, Id = 3, Count = 3 }
             };
         }
         private int LastKey

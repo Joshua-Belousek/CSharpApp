@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Libary.eCom.DTO;
 using Libary.eCom.Models;
 
-namespace Libary.eCom.Models
+namespace Libary.eCom.DTO
 {
-    public class Product
+    public class ProductDTO
     {
         public int Id { get; set; }
         public string? Name { get; set; }
@@ -28,22 +27,23 @@ namespace Libary.eCom.Models
             return display ?? string.Empty;
         }
 
-        public Product() { 
+        public ProductDTO()
+        {
             Name = string.Empty;
             Price = 0;
         }
 
-        public Product(string name, double price)
+        public ProductDTO(string name, double price)
         {
             Name = name; Price = price;
         }
 
-
-        public Product(Product p)
+        public ProductDTO(ProductDTO p)
         {
             Name = p.Name; Price = p.Price; Id = p.Id;
         }
-        public Product(ProductDTO p)
+
+        public ProductDTO(Product p)
         {
             Name = p.Name; Price = p.Price; Id = p.Id;
         }

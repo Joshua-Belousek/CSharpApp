@@ -10,34 +10,36 @@ namespace Maui.eCom.ViewModels
 {
     public class ProductViewModel
     {
+
         public string? Name
         {
             get
             {
-                return Model?.Product?.Name ?? string.Empty;
+                return cachedModel?.Product?.Name ?? string.Empty;
             }
 
             set
             {
                 if (Model != null && Model?.Product?.Name != value)
                 {
-                    Model.Product.Name = value ?? "";
+                    cachedModel.Product.Name = value ?? "";
                 }
             }
         }
+
          
         public double? Price
         {
             get
             {
-                return Model?.Product.Price ?? 0;
+                return cachedModel?.Product.Price ?? 0;
             }
 
             set
             {
-                if (Model != null && Model.Product.Price != value)
+                if (cachedModel != null && cachedModel.Product?.Price != value)
                 {
-                    Model.Product.Price = value ?? -1;
+                    cachedModel.Product.Price = value ?? -1;
                 }
             }
         }
@@ -46,43 +48,45 @@ namespace Maui.eCom.ViewModels
         {
             get
             {
-                return Model?.Count ?? 0;
+                return cachedModel?.Count ?? 0;
             }
 
             set
             {
-                if (Model != null && Model.Count != value)
+                if (cachedModel != null && cachedModel.Count != value)
                 {
-                    Model.Count = value ?? 0;
+                    cachedModel.Count = value ?? 0;
                 }
             }
         }
 
         public Item? Model { get; set; }
 
+        private Item? cachedModel { get; set; }
+
 
         public ProductViewModel()
         {
-            Model = new Item();
+            cachedModel = new Item();
         }
 
         public ProductViewModel(Item? model)
         {
-            Model = new Item(model);
+            cachedModel = new Item(model);
         }
 
         public void add()
         {
-            if (Model.Id == 0)
+            if (cachedModel.Id == 0)
             {
-                InventoryServiceProxy.Current.Add(Model);
+                InventoryServiceProxy.Current.Add(cachedModel);
                 return;
             }
 
 
-            InventoryServiceProxy.Current.Update(Model.Id,1,Model.Product.Name);
-            InventoryServiceProxy.Current.Update(Model.Id, 2, Model.Product.Price.ToString());
-            InventoryServiceProxy.Current.Update(Model.Id, 3, Model.Count.ToString());
+            InventoryServiceProxy.Current.Update(cachedModel.Id,1, cachedModel.Product.Name);
+            InventoryServiceProxy.Current.Update(cachedModel.Id, 2, cachedModel.Product.Price.ToString());
+            InventoryServiceProxy.Current.Update(cachedModel.Id, 3, cachedModel.Count.ToString());
         }
          
     }

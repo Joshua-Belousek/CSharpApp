@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Libary.eCom.DTO;
 
 namespace Libary.eCom.Models
 {
@@ -11,7 +12,7 @@ namespace Libary.eCom.Models
         public int Count { get; set; }
 
         public int Id { get; set; }
-        public Product? Product { get; set; }
+        public ProductDTO? Product { get; set; }
 
         public override string ToString()
         {
@@ -28,12 +29,12 @@ namespace Libary.eCom.Models
 
         public Item()
         {
-            Product = new Product();
+            Product = new ProductDTO();
         }
 
         public Item(Item item)
         {
-            Product = item.Product;
+            Product = new ProductDTO(item.Product);
             Count = item.Count;
             Id = item.Id;
         }
