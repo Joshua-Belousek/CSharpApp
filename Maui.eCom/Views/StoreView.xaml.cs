@@ -26,4 +26,9 @@ public partial class StoreView : ContentPage
     {
         Shell.Current.GoToAsync("//ShoppingCart");
     }
+
+    private void ContentPage_NavigatedTo(object sender, NavigatedToEventArgs e)
+    {
+        (BindingContext as StoreViewModel)?.RefreshProductList();
+    }
 }

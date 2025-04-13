@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Libary.eCom.DTO;
 using Libary.eCom.Models;
+using Library.eCom.Util;
+using Newtonsoft.Json;
 
 namespace Libary.eCom.Services
 {
@@ -35,24 +37,8 @@ namespace Libary.eCom.Services
 
         private InventoryServiceProxy()
         {
-            Products = new List<Item?>
-            {
-                new Item{Product = new ProductDTO{Id = 1, Name ="Product 1"}, Id = 1, Count = 1 },
-                new Item{Product = new ProductDTO{Id = 2, Name ="Product 2"}, Id = 2, Count = 2 },
-                new Item { Product = new ProductDTO{ Id = 3, Name = "Product 3" }, Id = 3, Count = 3 }
-            };
-        }
-        private int LastKey
-        {
-            get
-            {
-                if (!Products.Any())
-                {
-                    return 0;
-                }
-
-                return Products.Select(p => p?.Id ?? 0).Max();
-            }
+            var productPayload = new WebRequestHandler().Get("/Inventory").Result;
+            Products = JsonConvert.DeserializeObject<List<Item>>(productPayload) ?? new List<Item?>();
         }
 
         public Item? Delete(int id)
@@ -62,50 +48,50 @@ namespace Libary.eCom.Services
                 return null;
             }
 
-            Item? Item = Products.FirstOrDefault(p => p.Id == id);
-            Products.Remove(Item);
+            var result = new WebRequestHandler().Delete($"/Inventory/{id}").Result;
 
-            return Item;
+            Item? product = Products.FirstOrDefault(p => p.Id == id);
+            Products.Remove(product);
+            return JsonConvert.DeserializeObject<Item>(result);
         }
 
-        public Item Add(Item p)
+        public Item Add(Item item)
         {
-            if (p.Id == 0)  // 0 means add
-            {
-                p.Id = LastKey + 1;
-                p.Product.Id = p.Id;
-                Products.Add(p);
-            }
-            return p;
+            var response = new WebRequestHandler().Post("/Inventory", item).Result;
+            var newItem = JsonConvert.DeserializeObject<Item>(response);
+            Products.Add(newItem);
+
+            return item;
         }
-        public Item Update(int Id, int choice, string newVal)
+        public Item? Update(Item item)
         {
-            var item = Products.FirstOrDefault(p => p.Id == Id);
-            if (choice == 1)
-            {
-                item.Product.Name = newVal;
-            }
-            else if (choice == 2)
-            {
-                double price = double.Parse(newVal);
-                item.Product.Price = price;
-            }
-            else if (choice == 3)
-            {
-                int count = int.Parse(newVal);
-                item.Count = count;
-            }
-            else if (choice == 4)
-            {
-                int count = int.Parse(newVal);
-                item.Count += count;
-            }
+
+
+            var response = new WebRequestHandler().Post("/Inventory", item).Result;
+            var newItem = JsonConvert.DeserializeObject<Item>(response);
+
+            var existingItem = Products.FirstOrDefault(p => p.Id == item.Id);
+            var index = Products.IndexOf(existingItem);
+            Products.RemoveAt(index);
+            Products.Insert(index, new Item(newItem));
+
+            return item;
+        }
+
+        public Item? Return(int id, int count)
+        {
+            var item = Products.FirstOrDefault(p => p.Id == id);
+            if (item == null)
+                return null;
+            item.Count += count;
 
             return item;
         }
         
         public Item? buy(int Id, int count)
         {
+            if (count == 0) return null;
+
             var selectedProd = Products.FirstOrDefault(p => p.Id == Id);
 
             if (selectedProd == null)
@@ -188,12 +174,12 @@ namespace Libary.eCom.Services
             if (count == -1 || item.Count == count)
             {
                 shoppingCart.Remove(item);
-                InventoryServiceProxy.Current.Update(id, 4, item.Count.ToString());
+                InventoryServiceProxy.Current.Return(id,item.Count);
             }
             else if (count < item.Count)
             {
                 item.Count -= count;
-                InventoryServiceProxy.Current.Update(id, 4, count.ToString());
+                InventoryServiceProxy.Current.Return(id,count);
             }
 
             return item;

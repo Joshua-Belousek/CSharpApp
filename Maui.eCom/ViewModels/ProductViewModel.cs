@@ -15,14 +15,14 @@ namespace Maui.eCom.ViewModels
         {
             get
             {
-                return cachedModel?.Product?.Name ?? string.Empty;
+                return Model?.Product?.Name ?? string.Empty;
             }
 
             set
             {
                 if (Model != null && Model?.Product?.Name != value)
                 {
-                    cachedModel.Product.Name = value ?? "";
+                    Model.Product.Name = value ?? "";
                 }
             }
         }
@@ -32,14 +32,14 @@ namespace Maui.eCom.ViewModels
         {
             get
             {
-                return cachedModel?.Product.Price ?? 0;
+                return Model?.Product.Price ?? 0;
             }
 
             set
             {
-                if (cachedModel != null && cachedModel.Product?.Price != value)
+                if (Model != null && Model.Product?.Price != value)
                 {
-                    cachedModel.Product.Price = value ?? -1;
+                    Model.Product.Price = value ?? -1;
                 }
             }
         }
@@ -48,45 +48,41 @@ namespace Maui.eCom.ViewModels
         {
             get
             {
-                return cachedModel?.Count ?? 0;
+                return Model?.Count ?? 0;
             }
 
             set
             {
-                if (cachedModel != null && cachedModel.Count != value)
+                if (Model != null && Model.Count != value)
                 {
-                    cachedModel.Count = value ?? 0;
+                    Model.Count = value ?? 0;
                 }
             }
         }
 
         public Item? Model { get; set; }
 
-        private Item? cachedModel { get; set; }
-
 
         public ProductViewModel()
         {
-            cachedModel = new Item();
+            Model = new Item();
         }
 
         public ProductViewModel(Item? model)
         {
-            cachedModel = new Item(model);
+            Model = new Item(model);
         }
 
         public void add()
         {
-            if (cachedModel.Id == 0)
+            if (Model.Id == 0)
             {
-                InventoryServiceProxy.Current.Add(cachedModel);
+                InventoryServiceProxy.Current.Add(Model);
                 return;
             }
 
 
-            InventoryServiceProxy.Current.Update(cachedModel.Id,1, cachedModel.Product.Name);
-            InventoryServiceProxy.Current.Update(cachedModel.Id, 2, cachedModel.Product.Price.ToString());
-            InventoryServiceProxy.Current.Update(cachedModel.Id, 3, cachedModel.Count.ToString());
+            InventoryServiceProxy.Current.Update(Model);
         }
          
     }

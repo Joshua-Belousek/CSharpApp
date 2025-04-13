@@ -30,8 +30,15 @@ namespace Maui.eCom.ViewModels
 
         public void buy()
         {
+            if (Item == null)
+                return;
             cart.add(Item.Id,ItemCount);
             NotifyPropertyChanged("Inventory");
+        }
+
+        public void RefreshProductList()
+        {
+            NotifyPropertyChanged(nameof(Inventory));
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
