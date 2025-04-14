@@ -40,5 +40,35 @@ namespace API.eCom.EC
 
             return item;
         }
+
+        public Item? buy(int Id, int count)
+        {
+            if (count == 0) return null;
+
+            var selectedProd = FakeDatabase.Inventory.FirstOrDefault(p => p.Id == Id);
+
+            if (selectedProd == null)
+                return null;
+            if (selectedProd.Count < count)
+                return null;
+
+            Item ShoppingCartProduct = new Item(selectedProd);
+
+            selectedProd.Count -= count;
+            ShoppingCartProduct.Count = count;
+
+
+            return ShoppingCartProduct;
+        }
+
+        public Item? Return(int id, int count)
+        {
+            var item = FakeDatabase.Inventory.FirstOrDefault(p => p.Id == id);
+            if (item == null)
+                return null;
+            item.Count += count;
+
+            return item;
+        }
     }
     }

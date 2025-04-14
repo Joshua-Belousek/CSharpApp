@@ -32,6 +32,16 @@ namespace API.eCom.Database
             }
         }
 
+        private static List<Item?> cart = new List<Item?>();
+
+        public static List<Item?> Cart
+        {
+            get
+            {
+                return cart;
+            }
+        }
+
 
     }
 }

@@ -81,8 +81,10 @@ namespace Libary.eCom.Services
         public Item? Return(int id, int count)
         {
             var item = Products.FirstOrDefault(p => p.Id == id);
+
             if (item == null)
                 return null;
+
             item.Count += count;
 
             return item;
@@ -141,15 +143,20 @@ namespace Libary.eCom.Services
         public void add(int Id, int count)
         {
             var isInCart = shoppingCart.FirstOrDefault(p => p.Id == Id);
+            var item = new Item();
             if (isInCart != null)
             {
-                var item = InventoryServiceProxy.Current.buy(Id, count);
+                item = InventoryServiceProxy.Current.buy(Id, count);
                 if (item != null)
                 {
                     isInCart.Count += item.Count;
                 }
+                new WebRequestHandler().Post($"/Cart", item);
                 return;
             }
+            item.Id = Id;
+            item.Count = count;
+            new WebRequestHandler().Post($"/Cart", item);
             shoppingCart.Add(InventoryServiceProxy.Current.buy(Id, count));
         }
 
@@ -170,6 +177,8 @@ namespace Libary.eCom.Services
                 return null;
             if (count > item.Count)
                 return null;
+
+            new WebRequestHandler().Delete($"/Cart/{id}/{count}");
 
             if (count == -1 || item.Count == count)
             {

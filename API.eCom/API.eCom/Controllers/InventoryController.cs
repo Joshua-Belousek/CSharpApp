@@ -16,7 +16,7 @@ namespace API.eCom.Controllers
             _logger = logger;
         }
 
-        [HttpGet(Name = "GetWeatherForecast")]
+        [HttpGet()]
         public IEnumerable<Item?> Get()
         {
             return new InventoryEC().Get();
