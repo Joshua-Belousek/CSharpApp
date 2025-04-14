@@ -37,7 +37,16 @@ namespace API.eCom.Controllers
             new CartEC().add(item.Id,item.Count);
         }
 
+        [HttpGet("/checkout")]
+        public List<double> checkout()
+        {
+            return new CartEC().checkOut();
+        }
 
-
+        [HttpGet("/checkout/confirm")]
+        public void confirm()
+        {
+            new CartEC().ClearCart();
+        }
     }
 }

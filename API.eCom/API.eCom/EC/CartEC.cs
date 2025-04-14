@@ -55,6 +55,24 @@ namespace API.eCom.EC
             return item;
         }
 
+        public List<double> checkOut()
+        {
+            List<double> result = new List<double>();
+            result.Add(0);
+            result.Add(0);
+            foreach (Item item in FakeDatabase.Cart)
+            {
+                result[0] += item.Product.Price * (double)item.Count;
+            }
+            result[1] = result[0] * 0.07;
+            return result;
+        }
+
+        public void ClearCart()
+        {
+            FakeDatabase.Cart.Clear();
+        }
+
 
 
 

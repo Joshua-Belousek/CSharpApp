@@ -198,19 +198,14 @@ namespace Libary.eCom.Services
 
         public List<double> checkOut()
         {
-            List<double> result = new List<double>();
-            result.Add(0);
-            result.Add(0);
-            foreach (Item item in shoppingCart)
-            {
-                result[0] += item.Product.Price * (double)item.Count;
-            }
-            result[1] = result[0] * 0.07;
-            return result;
+            var response = new WebRequestHandler().Get("/checkout").Result;
+            var totals = JsonConvert.DeserializeObject<List<Double>>(response);
+            return totals;
         }
 
         public void ClearCart()
         {
+            new WebRequestHandler().Get("/checkout/confirm");
             shoppingCart.Clear();
         }
 
