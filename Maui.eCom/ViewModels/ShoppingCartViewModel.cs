@@ -16,13 +16,16 @@ namespace Maui.eCom.ViewModels
         public Item? Item { get; set; }
         public int ItemCount { get; set; }
 
+        public string? Query { get; set; }
+
         private CartServiceProxy cart = CartServiceProxy.Current;
 
         public ObservableCollection<Item?> Inventory
         {
             get
             {
-                return new ObservableCollection<Item?>(cart.shoppingCart);
+                var filteredList = cart.shoppingCart.Where(p => p?.Product.Name?.ToLower().Contains(Query?.ToLower() ?? string.Empty) ?? false);
+                return new ObservableCollection<Item?>(filteredList);
             }
 
         }

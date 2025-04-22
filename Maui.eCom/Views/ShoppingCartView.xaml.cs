@@ -28,4 +28,9 @@ public partial class ShoppingCartView : ContentPage
     {
         Shell.Current.GoToAsync("//Checkout");
     }
+
+    private void SearchClicked(object sender, EventArgs e)
+    {
+        (BindingContext as ShoppingCartViewModel)?.RefreshProductList();
+    }
 }

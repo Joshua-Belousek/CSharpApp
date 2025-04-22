@@ -42,6 +42,26 @@ namespace API.eCom.Database
             }
         }
 
+        private static List<List<Item?>> purchased = new List<List<Item?>>();
+
+        public static List<List<Item?>> Purchased
+        {
+            get
+            {
+                return purchased;
+            }
+        }
+
+        private static List<List<Double>> prices = new List<List<Double>>(); 
+
+        public static List <List<Double>> Prices
+        {
+            get
+            {
+                return prices;
+            }
+        }
+
 
     }
 }

@@ -162,7 +162,8 @@ namespace Libary.eCom.Services
 
         public CartServiceProxy()
         {
-            shoppingCart = new List<Item?>();
+            var productPayload = new WebRequestHandler().Get("/cart").Result;
+            shoppingCart = JsonConvert.DeserializeObject<List<Item>>(productPayload);
         }
         
 

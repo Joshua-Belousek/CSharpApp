@@ -70,6 +70,8 @@ namespace API.eCom.EC
 
         public void ClearCart()
         {
+            FakeDatabase.Prices.Add(checkOut());
+            FakeDatabase.Purchased.Add(FakeDatabase.Cart.ConvertAll(p => new Item(p)));
             FakeDatabase.Cart.Clear();
         }
 
